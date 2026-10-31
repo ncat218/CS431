@@ -1,0 +1,42 @@
+{
+  "detector": {
+    "path": "/kaggle/working/monkey_phase1/MonkeyOCRv2/detection/mmocr/mmocr/model_weight/dbnet_mkv2vitae_icdar2015.pth",
+    "sha256": "4b13e26ad5c2e1b13fef45ac608298254d083062d2b9cafba706064bd8e2cf82",
+    "bytes": 142796310,
+    "url": "https://huggingface.co/HB16888/MonkeyOCRv2_det/resolve/58c8bd712a1757a1d21b729ab69910573ecc325b/dbnet_mkv2vitae_icdar2015.pth"
+  },
+  "config": {
+    "path": "/kaggle/working/monkey_phase1/MonkeyOCRv2/detection/mmocr/mmocr/configs/textdet/dbnet/dbnet_mkv2vitae_1200e_icdar2015_2gpu_adamw.py",
+    "sha256": "db34e11dff43c8fc0d07bc5807a4e22442d218ccd43183d8b610e1d330be0e2c"
+  },
+  "backbone": {
+    "pretrained/monkeyocrv2_as/.gitattributes": {
+      "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+      "bytes": 1519
+    },
+    "pretrained/monkeyocrv2_as/README.md": {
+      "sha256": "8ec55b1a8e1f23a5ab2b82fba5a0c9947fc225a637ece1ebc1525443c66c004c",
+      "bytes": 50510
+    },
+    "pretrained/monkeyocrv2_as/config.json": {
+      "sha256": "f58baf575c23f525c3ff1243267e799b9aaa951beeef9a5c87d6bd64bed337a8",
+      "bytes": 1338
+    },
+    "pretrained/monkeyocrv2_as/configuration_monkeyocrv2_vitae.py": {
+      "sha256": "251d471e9f8d400c6159aa998295bd27b4a2e514b4e3528da9abb44e8c44595d",
+      "bytes": 5011
+    },
+    "pretrained/monkeyocrv2_as/model.safetensors": {
+      "sha256": "8f4d2dc342c263ae2299a66dc39631f9424fa09c4f575b142ea40e1b1cc1bad4",
+      "bytes": 83868128
+    },
+    "pretrained/monkeyocrv2_as/modeling_monkeyocrv2_vitae_vision.py": {
+      "sha256": "82d7614d14de76a0a6961e9678296ca8695901d378032ea3e6b5c2e22bbc2a31",
+      "bytes": 42799
+    },
+    "pretrained/monkeyocrv2_as/preprocessor_config.json": {
+      "sha256": "146fbdeca40a80ddcb3d3c959ba48e4daa2837ab8fc4d3d1f87bcd65d6039d72",
+      "bytes": 483
+    }
+  }
+}

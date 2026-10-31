@@ -1,0 +1,232 @@
+{
+  "evaluation_type": "external_TextVQA_TextOCR_word_level_polygon_evaluation",
+  "model": "monkey",
+  "manifest_sha256": "94e3a2ce989ce6a298d7ea30e7ce70f22ac676092b29df808bc3d33b426bf242",
+  "evaluator_sha256": "ea25c8d9fc240ec10dc6eb45883b163c8e92952ee885423985e6d013f026fcdc",
+  "protocol_sha256": "0530adc27e230e9dafa4e4019070ace1de3673f493ae4ea70b45a32e45f7af81",
+  "unique_sources": 9898,
+  "degraded_variants": 9898,
+  "score_policy": "No additional score filtering/sweep; preserve each detector fixed postprocessing",
+  "latency_with_decode_and_postprocess": {
+    "clean": {
+      "available": true,
+      "samples": 9898,
+      "mean_ms": 786.120745062836,
+      "p50_ms": 754.4928385000276,
+      "p95_ms": 1061.3057206001483
+    },
+    "degraded": {
+      "available": true,
+      "samples": 9898,
+      "mean_ms": 797.2744045940622,
+      "p50_ms": 764.1669185004503,
+      "p95_ms": 1063.694625700009
+    }
+  },
+  "clean_unique": {
+    "instances": 9898,
+    "counts": {
+      "tp": 207491.0,
+      "gt": 318490.0,
+      "pred": 268050.0,
+      "covered": 239679.0
+    },
+    "precision": 0.7740757321395262,
+    "recall": 0.6514835630632045,
+    "hmean": 0.7075084393221264,
+    "word_coverage_recall": 0.7525479606895036
+  },
+  "degraded_instance": {
+    "instances": 9898,
+    "counts": {
+      "tp": 71161.0,
+      "gt": 318490.0,
+      "pred": 105369.0,
+      "covered": 81753.0
+    },
+    "precision": 0.6753504351374693,
+    "recall": 0.22343244685861408,
+    "hmean": 0.33577675594950207,
+    "word_coverage_recall": 0.25668937800244906
+  },
+  "paired_source_weighted_micro": {
+    "clean": {
+      "precision": 0.7740757321395262,
+      "recall": 0.6514835630632045,
+      "hmean": 0.7075084393221264,
+      "word_coverage_recall": 0.7525479606895036
+    },
+    "degraded": {
+      "precision": 0.6753504351374693,
+      "recall": 0.22343244685861408,
+      "hmean": 0.33577675594950207,
+      "word_coverage_recall": 0.25668937800244906
+    },
+    "delta_pp": {
+      "precision": -9.872529700205689,
+      "recall": -42.805111620459044,
+      "hmean": -37.17316833726243,
+      "word_coverage_recall": -49.58585826870545
+    }
+  },
+  "macro_source_mean": {
+    "precision": {
+      "clean": 0.7127215093992234,
+      "degraded": 0.4878917627527512
+    },
+    "recall": {
+      "clean": 0.6031359921930375,
+      "degraded": 0.2717021610629871
+    },
+    "hmean": {
+      "clean": 0.626484215086815,
+      "degraded": 0.3064009334338241
+    },
+    "word_coverage_recall": {
+      "clean": 0.6841716778235081,
+      "degraded": 0.3099835637737818
+    }
+  },
+  "bootstrap": {
+    "method": "cluster bootstrap by source_image_id",
+    "available": true,
+    "repetitions": 1000,
+    "seed": 42,
+    "delta_pp_95ci": {
+      "precision": [
+        -11.178372147215516,
+        -8.549094694277056
+      ],
+      "recall": [
+        -44.20926310694678,
+        -41.36246061504841
+      ],
+      "hmean": [
+        -38.819587770840215,
+        -35.52232223182352
+      ],
+      "word_coverage_recall": [
+        -51.360712016579676,
+        -47.84568986752603
+      ]
+    }
+  },
+  "strata": {
+    "('realistic_mix', 'L2', False)": {
+      "clean_paired": {
+        "instances": 5974,
+        "counts": {
+          "tp": 122259.0,
+          "gt": 189003.0,
+          "pred": 157433.0,
+          "covered": 140726.0
+        },
+        "precision": 0.7765779728519434,
+        "recall": 0.6468627482103458,
+        "hmean": 0.7058100197439066,
+        "word_coverage_recall": 0.7445701920075343
+      },
+      "degraded": {
+        "instances": 5974,
+        "counts": {
+          "tp": 38031.0,
+          "gt": 189003.0,
+          "pred": 57224.0,
+          "covered": 43774.0
+        },
+        "precision": 0.6645987697469593,
+        "recall": 0.20121902826939256,
+        "hmean": 0.30891007078833765,
+        "word_coverage_recall": 0.23160478934196813
+      },
+      "delta_pp": {
+        "precision": -11.19792031049841,
+        "recall": -44.56437199409533,
+        "hmean": -39.68999489555689,
+        "word_coverage_recall": -51.29654026655661
+      }
+    },
+    "('realistic_mix', 'L2', True)": {
+      "clean_paired": {
+        "instances": 3924,
+        "counts": {
+          "tp": 85232.0,
+          "gt": 129487.0,
+          "pred": 110617.0,
+          "covered": 98953.0
+        },
+        "precision": 0.7705144778831463,
+        "recall": 0.6582282391282522,
+        "hmean": 0.7099590177589711,
+        "word_coverage_recall": 0.7641925444253092
+      },
+      "degraded": {
+        "instances": 3924,
+        "counts": {
+          "tp": 33130.0,
+          "gt": 129487.0,
+          "pred": 48145.0,
+          "covered": 37979.0
+        },
+        "precision": 0.6881296084744003,
+        "recall": 0.25585580019615867,
+        "hmean": 0.37301837506755536,
+        "word_coverage_recall": 0.2933035748762424
+      },
+      "delta_pp": {
+        "precision": -8.238486940874601,
+        "recall": -40.23724389320936,
+        "hmean": -33.69406426914157,
+        "word_coverage_recall": -47.08889695490667
+      }
+    }
+  },
+  "size_bins": {
+    "clean": {
+      "small_lt16px": {
+        "gt": 133946,
+        "matched": 80544,
+        "covered": 98540,
+        "recall": 0.6013169486210861
+      },
+      "medium_16_32px": {
+        "gt": 111904,
+        "matched": 81364,
+        "covered": 88854,
+        "recall": 0.7270875035744925
+      },
+      "large_ge32px": {
+        "gt": 72640,
+        "matched": 45583,
+        "covered": 52285,
+        "recall": 0.6275192731277534
+      }
+    },
+    "degraded": {
+      "small_lt16px": {
+        "gt": 133946,
+        "matched": 13283,
+        "covered": 16072,
+        "recall": 0.0991668284233945
+      },
+      "medium_16_32px": {
+        "gt": 111904,
+        "matched": 32205,
+        "covered": 36105,
+        "recall": 0.2877913211323992
+      },
+      "large_ge32px": {
+        "gt": 72640,
+        "matched": 25673,
+        "covered": 29576,
+        "recall": 0.35342786343612337
+      }
+    }
+  },
+  "limitations": [
+    "Synthetic degradation, not captured degraded images",
+    "TextOCR train is included in MonkeyOCRv2 pretraining sources; no unseen-data claim",
+    "Word GT versus possibly line predictions; coverage is diagnostic and can be gamed by large polygons",
+    "Full-set baseline audit; do not later fine-tune and claim this entire set is an untouched test"
+  ]
+}

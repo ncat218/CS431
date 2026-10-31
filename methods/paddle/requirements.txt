@@ -1,0 +1,9 @@
+# Paddle GPU is installed separately from the official cu126/cu118 index.
+# setup_paddle.py installs paddleocr==3.0.3 with --no-deps afterwards.
+# Only OCR extras are needed; its default metadata also requests IE/multimodal.
+paddlex[ocr]==3.0.3
+# Paddle 3.0 / legacy CV compatibility; the frozen evaluator supports NumPy 1.26.
+numpy==1.26.4
+Pillow==11.3.0
+shapely==2.2.0
+opencv-contrib-python==4.10.0.84

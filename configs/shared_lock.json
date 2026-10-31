@@ -1,0 +1,11 @@
+{
+  "schema": "cs431_frozen_phase2_reference_v1",
+  "sources": 9898,
+  "variants": 9898,
+  "manifest_sha256": "94e3a2ce989ce6a298d7ea30e7ce70f22ac676092b29df808bc3d33b426bf242",
+  "compressed_manifest_sha256": "a5ae85c6cb8fa401f0bcda2f544ab54cdfc1f0be795eb7f0916c896496f92cc6",
+  "protocol_sha256": "0530adc27e230e9dafa4e4019070ace1de3673f493ae4ea70b45a32e45f7af81",
+  "evaluator_sha256": "ea25c8d9fc240ec10dc6eb45883b163c8e92952ee885423985e6d013f026fcdc",
+  "builder_sha256": "6b2ecde7965222013e46669bbf75c240944068ba6cdd80779925e1670cee055b",
+  "public_notebook_sha256": "a1444c81e9c8315739c370ba50cc36402f45a7ebfa1baccc9cb6f5a7bb477cc8"
+}

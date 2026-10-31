@@ -1,0 +1,9 @@
+{
+  "monkey_h200_repository": "https://github.com/ncat218/MonKeyOCR-",
+  "monkey_snapshot_commit": "0afec7c1d63f8cfc8577fab6a5c79a0d4ee88048",
+  "snapshot_mode": "git tracked files only; no nested .git; no runtime caches",
+  "paddle_iou_evaluator_source": "https://github.com/PaddlePaddle/PaddleOCR/blob/a00f633cef33a8192f853fdaf8decf24ce2240b0/ppocr/metrics/eval_det_iou.py",
+  "paddle_iou_evaluator_sha256": "5d80facb77bca0ca2a561b6488a84e14cf06a173a6dec5cc22a4d01209e6b700",
+  "model_hash_provenance": "HF revision API LFS SHA256 for weights; SHA256 directly computed for inference.json and inference.yml",
+  "gpu_validation": "Paddle GPU not executed during repository preparation"
+}

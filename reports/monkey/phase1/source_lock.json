@@ -1,0 +1,7 @@
+{
+  "monkey_commit": "6cc0c0bb4864f2541fa6bc3a8f976cffaac8f359",
+  "mmcv_commit": "fc038a386a42d1f36d9ec49169d5817a52c70b8e",
+  "mmocr_commit": "1dcd6fa6958de22bcb997319833f0ac19c180ec7",
+  "detector_hf_revision": "58c8bd712a1757a1d21b729ab69910573ecc325b",
+  "backbone_hf_revision": "51778e7738fdad36ed72288881071b4dcd04b127"
+}

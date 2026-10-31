@@ -1,0 +1,40 @@
+{
+  "evaluation_type": "official_checkpoint_evaluation_reproduction",
+  "benchmark": "ICDAR2015 test",
+  "num_images": 500,
+  "measured": {
+    "precision": 0.9129113924050632,
+    "recall": 0.8680789600385171,
+    "hmean": 0.8899308983218164
+  },
+  "reference": {
+    "precision": 0.913,
+    "recall": 0.867,
+    "hmean": 0.889
+  },
+  "delta_percentage_points": {
+    "precision": -0.008860759493678483,
+    "recall": 0.10789600385171516,
+    "hmean": 0.09308983218163647
+  },
+  "numerically_within_proposed_hmean_tolerance": true,
+  "proposed_tolerance_pp": 0.5,
+  "group_tolerance_approved": false,
+  "status": "EVALUATED_REQUIRES_GROUP_REVIEW",
+  "phase2_authorized": false,
+  "source_lock": {
+    "monkey_commit": "6cc0c0bb4864f2541fa6bc3a8f976cffaac8f359",
+    "mmcv_commit": "fc038a386a42d1f36d9ec49169d5817a52c70b8e",
+    "mmocr_commit": "1dcd6fa6958de22bcb997319833f0ac19c180ec7",
+    "detector_hf_revision": "58c8bd712a1757a1d21b729ab69910573ecc325b",
+    "backbone_hf_revision": "51778e7738fdad36ed72288881071b4dcd04b127"
+  },
+  "dataset": {
+    "mode": "official_preparer",
+    "source": "Official patched MMOCR ICDAR2015 preparer",
+    "dataset_zoo_commit": "1dcd6fa6958de22bcb997319833f0ac19c180ec7"
+  },
+  "nvcc_version": "12.8",
+  "adapted_cuda": false,
+  "wall_seconds_includes_export": 472.99973858499993
+}

@@ -1,0 +1,27 @@
+{
+  "model_name": "PP-OCRv5_server_det",
+  "model_repository": "PaddlePaddle/PP-OCRv5_server_det",
+  "model_revision": "ca867c897ecbca8873081573a802ad70d499cb94",
+  "model_files_sha256": {
+    "inference.json": "af5876933d8806a1b50d895867e0781e135cd92ff37381992828fc8d1b842d28",
+    "inference.yml": "28fb721efc3634fc8aa677e474b9602cb815a91cf569ef357a7a553d7b3ce685",
+    "inference.pdiparams": "183146fe9d9910352f68482f623bcbbb9fa7b9e8fa1463b9ad288cef00524d2d"
+  },
+  "package_versions": {
+    "paddlepaddle-gpu": "3.0.0",
+    "paddleocr": "3.0.3",
+    "paddlex": "3.0.3",
+    "numpy": "1.26.4",
+    "Pillow": "11.3.0",
+    "shapely": "2.2.0"
+  },
+  "predictor_args": {
+    "limit_side_len": 960,
+    "limit_type": "max",
+    "thresh": 0.3,
+    "box_thresh": 0.6,
+    "unclip_ratio": 1.5
+  },
+  "paddleocr_source_commit": "a00f633cef33a8192f853fdaf8decf24ce2240b0",
+  "phase1_scope": "official checkpoint external ICDAR2015 validation; exact 83.8 reproduction NOT VERIFIED"
+}

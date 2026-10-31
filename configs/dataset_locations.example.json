@@ -1,0 +1,4 @@
+{
+  "clean_root": "/actual/root/containing/train_images",
+  "degraded_root": "/actual/textvqa_realistic_v2_10k"
+}

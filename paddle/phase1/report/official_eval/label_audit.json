@@ -1,0 +1,9 @@
+{
+  "official_images": 500,
+  "rrc_images": 500,
+  "same_image_ids": true,
+  "official_boxes": 5230,
+  "official_ignore": 3153,
+  "official_care": 2077,
+  "images_with_label_mismatch_vs_rrc": []
+}

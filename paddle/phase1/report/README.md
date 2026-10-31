@@ -1,8 +1,12 @@
 # Paddle Phase 1 report
 
-Chưa có kết quả Paddle thực tế đã chạy/review trong repo. Exact official 83,8%
-reproduction: NOT VERIFIED. Chạy notebook `../notebooks/official_eval.ipynb` hoặc
-dispatcher từ root để sinh kết quả ICDAR2015 test tại đây, rồi xem metrics,
-per-image counts, logs, provenance và 20 overlays trước khi ghi nhận review.
+Kết quả Phase 1 chính thức của Paddle: [REVIEW.md](REVIEW.md).
+Exact official 83,8% reproduction: NOT VERIFIED.
 
-Các artifacts sinh khi chạy được gitignore. Không có receipt mở gate được commit.
+| Folder | Nội dung | Notebook sinh ra |
+|---|---|---|
+| `official_eval/` | Bằng chứng chạy `tools/eval.py` chính thức: metrics, log, label audit, hashes, môi trường | `../notebooks/official_eval.ipynb` |
+| `diag_line_vs_word/` | Phân tích phụ: box dòng so với GT theo từ | `../notebooks/diag_line_vs_word.ipynb` |
+
+Các file khác sinh tại đây khi chạy `run.py paddle phase1` (pipeline repo, dùng cho
+gate Phase 2) vẫn được gitignore. Không có receipt mở gate được commit.

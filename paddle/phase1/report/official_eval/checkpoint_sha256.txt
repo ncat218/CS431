@@ -1,0 +1,2 @@
+2802f7d4748ea592819ae4550c195c5bdb43755dfdb5ebd25e01bb4d885aebc9     105414496  PP-OCRv5_server_det_pretrained.pdparams
+source: https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams

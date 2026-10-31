@@ -1,0 +1,39 @@
+$ ['/usr/bin/python3', '-m', 'pip', 'install', '-q', 'paddlepaddle-gpu==3.3.1', '-i', 'https://www.paddlepaddle.org.cn/packages/stable/cu126/']
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+torch 2.11.0+cu128 requires nvidia-cudnn-cu12==9.19.0.56; platform_system == "Linux", but you have nvidia-cudnn-cu12 9.5.1.17 which is incompatible.
+torch 2.11.0+cu128 requires nvidia-cusparselt-cu12==0.7.1; platform_system == "Linux", but you have nvidia-cusparselt-cu12 0.6.3 which is incompatible.
+torch 2.11.0+cu128 requires nvidia-nccl-cu12==2.28.9; platform_system == "Linux", but you have nvidia-nccl-cu12 2.25.1 which is incompatible.
+
+$ ['git', 'clone', '--depth', '1', '--branch', 'v3.3.3', 'https://github.com/PaddlePaddle/PaddleOCR.git', '/kaggle/working/PaddleOCR']
+Cloning into '/kaggle/working/PaddleOCR'...
+Note: switching to 'c0522b89e2218741f174ec8b45588dec93fa66b3'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+
+$ ['/usr/bin/python3', '-m', 'pip', 'install', '-q', '-r', '/kaggle/working/PaddleOCR/requirements.txt']
+
+$ ['/usr/bin/python3', '-m', 'pip', 'uninstall', '-y', 'torch', 'torchvision', 'torchaudio']
+Found existing installation: torch 2.11.0+cu128
+Uninstalling torch-2.11.0+cu128:
+  Successfully uninstalled torch-2.11.0+cu128
+Found existing installation: torchvision 0.26.0+cu128
+Uninstalling torchvision-0.26.0+cu128:
+  Successfully uninstalled torchvision-0.26.0+cu128
+Found existing installation: torchaudio 2.11.0+cu128
+Uninstalling torchaudio-2.11.0+cu128:
+  Successfully uninstalled torchaudio-2.11.0+cu128
+

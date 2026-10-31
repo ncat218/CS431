@@ -1,0 +1,27 @@
+{
+  "pypi.org": {
+    "dns": true,
+    "https": true,
+    "error": null
+  },
+  "www.paddlepaddle.org.cn": {
+    "dns": true,
+    "https": true,
+    "error": null
+  },
+  "github.com": {
+    "dns": true,
+    "https": true,
+    "error": null
+  },
+  "paddle-model-ecology.bj.bcebos.com": {
+    "dns": true,
+    "https": true,
+    "error": null
+  },
+  "paddleocr.bj.bcebos.com": {
+    "dns": true,
+    "https": true,
+    "error": null
+  }
+}

@@ -250,15 +250,15 @@ class FrozenArtifactsTests(unittest.TestCase):
 
     def test_comparison_refuses_incompatible_hash(self):
         lock=manifest.verify_shared()
-        monkey=read_json(ROOT/'reports/monkey/phase2/metrics.json')
+        monkey=read_json(ROOT/'monkey/phase2/report/metrics.json')
         paddle=copy.deepcopy(monkey);paddle['model']='paddle'
         with test_temp() as tmp:
             root=Path(tmp);save_json(root/'p.json',paddle)
-            table=workflow.compare(root/'p.json',ROOT/'reports/monkey/phase2/metrics.json',root/'comparison.md')
+            table=workflow.compare(root/'p.json',ROOT/'monkey/phase2/report/metrics.json',root/'comparison.md')
             self.assertIn('paddle',table.read_text())
             paddle['manifest_sha256']='wrong';save_json(root/'p.json',paddle)
             with self.assertRaisesRegex(ValueError,'different shared artifacts'):
-                workflow.compare(root/'p.json',ROOT/'reports/monkey/phase2/metrics.json',root/'comparison.md')
+                workflow.compare(root/'p.json',ROOT/'monkey/phase2/report/metrics.json',root/'comparison.md')
 
 
 if __name__=='__main__':

@@ -5,5 +5,11 @@
   "paddle_iou_evaluator_source": "https://github.com/PaddlePaddle/PaddleOCR/blob/a00f633cef33a8192f853fdaf8decf24ce2240b0/ppocr/metrics/eval_det_iou.py",
   "paddle_iou_evaluator_sha256": "5d80facb77bca0ca2a561b6488a84e14cf06a173a6dec5cc22a4d01209e6b700",
   "model_hash_provenance": "HF revision API LFS SHA256 for weights; SHA256 directly computed for inference.json and inference.yml",
-  "gpu_validation": "Paddle GPU not executed during repository preparation"
+  "gpu_validation": "Paddle GPU not executed during repository preparation",
+  "monkey_snapshot_location": "monkey/phase3",
+  "monkey_reports_locations": [
+    "monkey/phase1/report",
+    "monkey/phase2/report",
+    "monkey/phase3/report"
+  ]
 }

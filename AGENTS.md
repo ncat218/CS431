@@ -3,6 +3,15 @@
 Yêu cầu trực tiếp mới nhất của người dùng có ưu tiên cao hơn tài liệu lịch sử.
 Đọc README.md và docs/WORKFLOW.md trước khi thay đổi workflow.
 
+## Workspace Monkey riêng
+
+- Monkey làm việc trong `monkey/`, mở `Monkey.code-workspace` hoặc
+  folder đó; đọc thêm AGENTS.md của workspace.
+- Dùng launcher `monkey/run.py` để cache/output/env thuộc runtime
+  Monkey riêng. Không đặt artifacts Monkey vào outputs/models/.local của Paddle.
+- Shared manifest/protocol/evaluator và reports vẫn là tài nguyên của repo chung.
+- Repo H200 cũ được giữ riêng, không tự thay đổi hoặc dùng lại state đang chạy.
+
 ## Paddle: gate theo từng clone
 
 - Môi trường đích: Kaggle T4 ×2; thay thế: Colab A100, một GPU.
@@ -31,12 +40,13 @@ Yêu cầu trực tiếp mới nhất của người dùng có ưu tiên cao hơ
 - Một evaluator dùng chung; không CER/WER, recognition, restoration trong Phase 1–2.
 - Không trộn full-master Phase 2 với test split Phase 3 đã fine-tune.
 - File handoff trong docs/reference có trạng thái cũ. Monkey đã có Phase 1–3;
-  xem reports/monkey. Repo H200 riêng vẫn là nơi vận hành HPC.
+  xem monkey/phase1/report, monkey/phase2/report, monkey/phase3/report.
+  Repo H200 riêng vẫn là nơi vận hành HPC.
 
 ## Kiểm tra và công bố
 
 Chạy `python -m unittest discover -s tests -v` và kiểm tra shared hashes.
-Khi sửa Monkey Phase 3, chạy thêm bộ tests trong methods/monkey/phase3.
+Khi sửa Monkey Phase 3, chạy thêm bộ tests trong monkey/phase3.
 Không báo đã chạy GPU nếu chỉ kiểm thử CPU. Không commit ảnh dataset, raw full
 TextOCR JSON, weights, credentials hoặc prediction files lớn. Manifest nén
 đã freeze là annotation subset chung có chủ đích, không chứa pixels/transcripts.

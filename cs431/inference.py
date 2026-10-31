@@ -9,13 +9,13 @@ from pathlib import Path
 
 from .common import ROOT, canonical, identity, jsonl, read_json, save_json, sha256, write_jsonl
 
-CONFIG = ROOT/'configs/paddle_v5.json'
+CONFIG = ROOT/'paddle/configs/paddle_v5.json'
 
 
 def model_identity(model_dir, config_path=CONFIG):
     config = read_json(config_path)
     provenance = read_json(ROOT/'configs/source_provenance.json')
-    if sha256(ROOT/'methods/paddle/vendor/eval_det_iou.py') != provenance['paddle_iou_evaluator_sha256']:
+    if sha256(ROOT/'paddle/vendor/eval_det_iou.py') != provenance['paddle_iou_evaluator_sha256']:
         raise RuntimeError('Pinned upstream ICDAR evaluator changed')
     folder = Path(model_dir)
     for name, expected in config['model_files_sha256'].items():
@@ -29,7 +29,7 @@ def model_identity(model_dir, config_path=CONFIG):
     code = {name: sha256(ROOT/name) for name in [
         'cs431/common.py', 'cs431/inference.py', 'cs431/icdar.py',
         'cs431/workflow.py', 'cs431/manifest.py', 'cs431/gate.py',
-        'methods/paddle/vendor/eval_det_iou.py']}
+        'paddle/vendor/eval_det_iou.py']}
     return dict(config_sha256=sha256(config_path), config_content_sha256=identity(config), model_files=config['model_files_sha256'],
                 model_revision=config['model_revision'], package_versions=versions,
                 environment_packages_identity=identity(packages), python_version=sys.version,

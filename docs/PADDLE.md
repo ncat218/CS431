@@ -1,7 +1,7 @@
 # PaddleOCR Phase 1 → Phase 2
 
 Model: **PP-OCRv5_server_det**, detector only. PaddleOCR/PaddleX 3.0.3,
-PaddlePaddle GPU 3.0.0. Config/HF revision/file hashes ở `configs/paddle_v5.json`.
+PaddlePaddle GPU 3.0.0. Config/HF revision/file hashes ở `paddle/configs/paddle_v5.json`.
 Môi trường Paddle pin NumPy 1.26.4 để giữ tương thích stack CV cũ; môi trường CPU
 kiểm thử/audit dùng NumPy 2.3.5. Không đổi package versions giữa hai phase Paddle.
 Default official inference model: resize long side 960/max, DB thresh 0,3,
@@ -18,7 +18,7 @@ Nguồn chính thức đã kiểm tra:
 
 Notebook tạo venv Linux Python 3.11/3.12, không sửa môi trường Monkey. Setup cài
 wheel chính thức cu126 mặc định; nếu driver chỉ phù hợp CUDA 11.8, chủ động dùng
-`tools/setup_paddle.py --cuda cu118` trước Phase 1. Không tự downgrade/đổi giữa phase.
+`paddle/tools/setup_paddle.py --cuda cu118` trước Phase 1. Không tự downgrade/đổi giữa phase.
 Không cài driver, không cần sudo. `nvidia-smi` và Paddle GPU matmul probe phải thành công.
 Nếu phiên bản Python runtime không phù hợp, chọn runtime Python phù hợp trước khi chạy.
 
@@ -63,6 +63,6 @@ Giữ output và clone nếu cần resume. Cùng lệnh/cùng topology giữ pre
 ảnh; fragment cuối bị ngắt được lưu rồi sửa, lỗi giữa file làm dừng. Không chạy hai
 controller đồng thời vào cùng `--out`. Chọn `--out` mới khi thay cấu hình/GPU.
 
-Sau Phase 2, xem `outputs/paddle/phase2/metrics/clean_vs_degraded.md`, JSON, paired
+Sau Phase 2, xem `paddle/phase2/report/metrics/clean_vs_degraded.md`, JSON, paired
 source CSV, overlays/gallery.html và provenance. `run.py compare` ghép với baseline
 Monkey đã review, chỉ khi cả ba hash và số source/variant khớp.

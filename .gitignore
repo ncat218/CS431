@@ -1,4 +1,12 @@
 .local/
+.runtime/
+monkey/workspace.local.json
+paddle/phase1/report/*
+!paddle/phase1/report/README.md
+paddle/phase2/report/*
+!paddle/phase2/report/README.md
+comparison/*
+!comparison/README.md
 .build_sources/
 outputs/
 data/

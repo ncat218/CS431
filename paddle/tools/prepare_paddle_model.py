@@ -5,14 +5,14 @@ import json
 import urllib.request
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('--out', default=str(ROOT/'models/PP-OCRv5_server_det'))
+    p.add_argument('--out', default=str(ROOT/'paddle/models/PP-OCRv5_server_det'))
     args = p.parse_args()
-    cfg = json.loads((ROOT/'configs/paddle_v5.json').read_text())
+    cfg = json.loads((ROOT/'paddle/configs/paddle_v5.json').read_text())
     folder = Path(args.out)
     folder.mkdir(parents=True, exist_ok=True)
     for name, expected in cfg['model_files_sha256'].items():

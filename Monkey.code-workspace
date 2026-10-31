@@ -1,0 +1,55 @@
+{
+  "folders": [
+    {
+      "name": "Monkey",
+      "path": "monkey"
+    },
+    {
+      "name": "Shared benchmark",
+      "path": "shared"
+    }
+  ],
+  "settings": {
+    "terminal.integrated.cwd": "${workspaceFolder:Monkey}",
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/.runtime": true
+    },
+    "search.exclude": {
+      "**/.runtime/**": true,
+      "**/.venv*/**": true
+    }
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Monkey: status",
+        "type": "process",
+        "command": "python",
+        "args": [
+          "run.py",
+          "status"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:Monkey}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Monkey: Phase 3 plan (CPU only)",
+        "type": "process",
+        "command": "python",
+        "args": [
+          "run.py",
+          "phase3",
+          "--plan-only"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:Monkey}"
+        },
+        "problemMatcher": []
+      }
+    ]
+  }
+}

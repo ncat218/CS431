@@ -5,12 +5,12 @@ import sys
 import venv
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('--venv', default=str(ROOT/'.venv-paddle'))
+    p.add_argument('--venv', default=str(ROOT/'paddle/.venv'))
     p.add_argument('--cuda', choices=['cu126', 'cu118'], default='cu126')
     args = p.parse_args()
     if sys.platform != 'linux' or not (3, 11) <= sys.version_info[:2] <= (3, 12):
@@ -23,7 +23,7 @@ def main():
     subprocess.run([python, '-m', 'pip', 'install', 'pip==25.1.1'], check=True)
     subprocess.run([python, '-m', 'pip', 'install', 'paddlepaddle-gpu==3.0.0',
                     '-i', f'https://www.paddlepaddle.org.cn/packages/stable/{args.cuda}/'], check=True)
-    subprocess.run([python, '-m', 'pip', 'install', '-r', str(ROOT/'methods/paddle/requirements.txt')], check=True)
+    subprocess.run([python, '-m', 'pip', 'install', '-r', str(ROOT/'paddle/requirements.txt')], check=True)
     subprocess.run([python, '-m', 'pip', 'install', '--no-deps', 'paddleocr==3.0.3'], check=True)
     subprocess.run([python, '-m', 'pip', 'check'], check=True)
     subprocess.run([python, '-c', 'import paddle; assert paddle.is_compiled_with_cuda(); '
@@ -32,7 +32,7 @@ def main():
                     'print(paddle.matmul(x,x).numpy()); paddle.device.cuda.synchronize(); '
                     'print(paddle.__version__,paddle.device.cuda.get_device_name(0))'], check=True)
     print('Environment ready:', python)
-    print('Next:', python, 'tools/prepare_paddle_model.py')
+    print('Next:', python, 'paddle/tools/prepare_paddle_model.py')
 
 
 if __name__ == '__main__':

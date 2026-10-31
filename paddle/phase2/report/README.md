@@ -1,0 +1,7 @@
+# Paddle Phase 2 report
+
+Chờ Phase 1 chạy đủ và được người thực hiện đánh giá chấp nhận trong clone hiện tại.
+Sau khi gate mở, `python run.py paddle phase2` từ root sinh metrics, paired overlays,
+provenance và predictions tại đây, trên đúng shared manifest 9.898 cặp.
+
+Chưa có số liệu Paddle Phase 2 được tạo sẵn. Artifacts runtime được gitignore.

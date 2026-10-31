@@ -29,3 +29,12 @@ in this local session.** Kaggle T4 ×2 or Colab A100 execution is still required
 the operator can accept Phase 1 and open the local Phase 2 gate. No Paddle result or
 review receipt is published as already completed. GitHub Actions provides additional
 Linux CPU checks when the pushed workflow is enabled.
+
+## Separate model folders and Monkey workspace
+
+After adopting the group's proposed root `monkey/`, `paddle/`, `comparison/`
+layout, 26 repo CPU tests and all 49 Monkey snapshot tests passed. Added checks
+cover relocated model tools/config/report paths, the root Monkey dispatcher,
+the editor workspace, runtime isolation, a real Phase 3 plan without creating
+runtime/submitting jobs, and rejection of Paddle predictions by Monkey Phase 2.
+Shared locked hashes still match. No GPU workload was launched for this reorganization.

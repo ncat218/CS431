@@ -7,7 +7,7 @@ from shapely.geometry import Polygon
 
 from .common import ROOT, identity, jsonl, module, sha256
 
-EVALUATOR = ROOT / 'methods/paddle/vendor/eval_det_iou.py'
+EVALUATOR = ROOT / 'paddle/vendor/eval_det_iou.py'
 
 
 def dataset(images, gt):

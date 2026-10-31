@@ -7,7 +7,7 @@ polygon GT; Phase 3 lưu code và kết quả cải tiến Monkey. Chỉ phát h
 | Phương pháp | Phase 1 | Phase 2 | Phase 3 | Hướng dẫn |
 |---|---|---|---|---|
 | Monkey | Có kết quả ICDAR2015 | Có baseline 9.898 cặp | Có code và report job 7957 | [monkey/README.md](monkey/README.md) |
-| Paddle | Chờ chạy và review theo clone | Chờ gate Phase 1 | Chưa triển khai | [paddle/README.md](paddle/README.md) |
+| Paddle | ICDAR2015 Hmean 52,30 (`tools/eval.py` chính thức; 83,8 NOT VERIFIED) | Chờ gate Phase 1 | Chưa triển khai | [paddle/README.md](paddle/README.md) |
 
 ## Cấu trúc
 
@@ -33,9 +33,10 @@ CS431/
     vendor/                      eval_det_iou.py + LICENSE
     tools/                       setup_paddle.py, prepare_paddle_model.py
     phase1/
-      notebooks/official_eval.ipynb
-      notebooks/pipeline_phase1_phase2.ipynb
-      report/                    Chờ kết quả chạy và đánh giá Phase 1
+      notebooks/official_eval.ipynb          Phase 1 chính thức (tools/eval.py)
+      notebooks/module_run.ipynb, diag_line_vs_word.ipynb   Phân tích phụ
+      notebooks/repo_pipeline_phase1.ipynb, pipeline_phase1_phase2.ipynb   Gate Phase 2
+      report/                    REVIEW + official_eval/ + diag_line_vs_word/
     phase2/report/               Chờ gate và kết quả Phase 2
   cs431/                         Package Python dùng chung, giữ ở root
   configs/                       Shared lock, source provenance, local-root example
@@ -64,10 +65,12 @@ Lệnh plan không submit job/chạy GPU. Chi tiết tại [README Monkey](monke
 
 ## Paddle: Kaggle T4 ×2 hoặc Colab A100
 
-Bắt đầu bằng [official_eval.ipynb](paddle/phase1/notebooks/official_eval.ipynb) cho
-Phase 1, hoặc [pipeline_phase1_phase2.ipynb](paddle/phase1/notebooks/pipeline_phase1_phase2.ipynb)
-cho luồng cả hai phase. `official_eval.ipynb` là notebook do CS431 tổ chức, dùng
-upstream evaluator đã pin; không phải notebook do tác giả paper cung cấp.
+Kết quả Phase 1 chính thức nằm ở [paddle/phase1/report/REVIEW.md](paddle/phase1/report/REVIEW.md).
+Kết quả này sinh từ [official_eval.ipynb](paddle/phase1/notebooks/official_eval.ipynb), chạy
+`tools/eval.py` của PaddleOCR với config, weights và nhãn ICDAR2015 chính thức.
+Để mở gate Phase 2 vẫn phải chạy [repo_pipeline_phase1.ipynb](paddle/phase1/notebooks/repo_pipeline_phase1.ipynb)
+hoặc [pipeline_phase1_phase2.ipynb](paddle/phase1/notebooks/pipeline_phase1_phase2.ipynb).
+Hai notebook này do CS431 tổ chức, dùng upstream evaluator đã pin.
 
 ```bash
 python run.py paddle status

@@ -1,0 +1,14 @@
+{
+  "weights": {
+    "url": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams",
+    "path": "/kaggle/working/official_files/PP-OCRv5_server_det_pretrained.pdparams",
+    "bytes": 105414496,
+    "sha256": "2802f7d4748ea592819ae4550c195c5bdb43755dfdb5ebd25e01bb4d885aebc9"
+  },
+  "label": {
+    "url": "https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_label.txt",
+    "path": "/kaggle/working/official_files/test_icdar2015_label.txt",
+    "bytes": 468453,
+    "sha256": "07a7dafd27fe0b4e10ba37568ccaa524b716efca3b123ebc4f7cf87e418aeb96"
+  }
+}

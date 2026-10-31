@@ -3,6 +3,9 @@
 monkey/workspace.local.json
 paddle/phase1/report/*
 !paddle/phase1/report/README.md
+!paddle/phase1/report/REVIEW.md
+!paddle/phase1/report/official_eval/
+!paddle/phase1/report/diag_line_vs_word/
 paddle/phase2/report/*
 !paddle/phase2/report/README.md
 comparison/*

@@ -67,7 +67,7 @@ class LayoutTests(unittest.TestCase):
 
     def test_phase1_only_notebook_stops_before_phase2(self):
         folder = ROOT/'paddle/phase1/notebooks'
-        first = read_json(folder/'official_eval.ipynb')
+        first = read_json(folder/'repo_pipeline_phase1.ipynb')
         full = read_json(folder/'pipeline_phase1_phase2.ipynb')
         self.assertLess(len(first['cells']), len(full['cells']))
         code = '\n'.join(''.join(c['source']) for c in first['cells'] if c['cell_type']=='code')

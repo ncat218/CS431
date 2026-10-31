@@ -1,0 +1,2 @@
+PaddleOCR repo  tag=v3.3.3  HEAD=c0522b89e2218741f174ec8b45588dec93fa66b3  (clone trực tiếp, không sửa file nào)
+Paddle          pip=3.3.1  build_commit=7688495538f4d6c1893f084dd238a402e8f68ab6

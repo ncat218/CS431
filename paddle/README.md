@@ -6,19 +6,31 @@ Exact reproduction con số official Paddle 83,8%: **NOT VERIFIED**.
 
 Repo dùng checkpoint official để kiểm chứng trên **ICDAR2015 test** bằng evaluator
 upstream đã pin trong `vendor/`. Đây là external benchmark validation, không phải
-reproduction benchmark riêng Paddle. Chưa có số liệu Paddle thực tế được review.
+reproduction benchmark riêng Paddle.
 
-## Bắt đầu
+**Kết quả Phase 1 chính thức:** ICDAR2015 test, P 58,52 / R 47,28 / **Hmean 52,30**.
+Chạy bằng `tools/eval.py` của PaddleOCR v3.3.3, đúng config, weights và nhãn chính thức.
+Xem [phase1/report/REVIEW.md](phase1/report/REVIEW.md).
 
-Từ root CS431, mở một trong hai notebook:
+## Notebooks
 
-- `paddle/phase1/notebooks/official_eval.ipynb`: Phase 1, hiển thị kết quả và review.
+Phase 1 chính thức, chạy độc lập trên Kaggle (Python 3.13, không clone CS431):
+
+- `paddle/phase1/notebooks/official_eval.ipynb`: kết quả chính thức 52,30.
+- `paddle/phase1/notebooks/module_run.ipynb`: chạy qua `paddleocr.TextDetection`
+  (Hmean 49,15). Predictions của nó là đầu vào cho notebook diag.
+- `paddle/phase1/notebooks/diag_line_vs_word.ipynb`: phân tích box dòng so với GT theo từ.
+
+Pipeline repo, dùng cho gate Phase 2:
+
+- `paddle/phase1/notebooks/repo_pipeline_phase1.ipynb`: `run.py paddle phase1` + review.
 - `paddle/phase1/notebooks/pipeline_phase1_phase2.ipynb`: toàn bộ workflow, dừng tại
   review cho đến khi người thực hiện điền đánh giá; sau đó mới có Phase 2.
 
-Cả hai notebook do CS431 tổ chức, không phải notebook nguyên bản của tác giả.
+Hai notebook pipeline do CS431 tổ chức, không phải notebook nguyên bản của tác giả.
 Chúng gọi detector-only API và evaluator Paddle đã pin; không tạo metric sẵn.
 Kaggle bật Internet + T4 ×2, Colab dùng một GPU nếu được cấp A100. Python 3.11/3.12.
+Kaggle hiện chạy Python 3.13 nên `setup_paddle.py` sẽ dừng; chưa xử lý.
 
 ```bash
 python paddle/tools/setup_paddle.py --venv /kaggle/working/cs431-paddle
@@ -30,6 +42,8 @@ Setup tạo môi trường riêng; model cache mặc định ở `paddle/models/
 cho hai T4, `--gpus 0` cho một A100. Không cài dependencies Paddle vào env Monkey.
 
 ## Phase 1
+
+Kết quả chính thức đã có, xem phần đầu. Phần dưới đây là pipeline repo để mở gate Phase 2.
 
 Attach đủ 500 test images và localization/transcription GT ICDAR2015, ghi nguồn thật.
 Chạy `python run.py paddle phase1 --images ... --gt ... --dataset-source ...` bằng

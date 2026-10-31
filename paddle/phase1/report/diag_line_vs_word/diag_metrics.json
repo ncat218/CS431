@@ -1,0 +1,85 @@
+{
+  "kind": "DIAGNOSTIC — không thay thế số chính thức trong metrics.json Phase 1",
+  "predictions_file": "/kaggle/input/notebooks/dionotdumb/phase1-paddle/artifacts/phase1_paddle/paddle_icdar2015_test_predictions.jsonl",
+  "predictions_sha256": "4baef5ddb9c09bcbb842dbf61f83a28af3e445a62755356844894a2870716c7f",
+  "gt_source": "/kaggle/input/datasets/bestofbests9/icdar2015/ch4_test_localization_transcription_gt",
+  "primary_rescored": {
+    "precision": 0.5833333333333334,
+    "recall": 0.42465093885411653,
+    "hmean": 0.49150181108943997,
+    "matched": 882,
+    "gt_care": 2077,
+    "det_care": 1512,
+    "gt_ignore": 3153,
+    "det_ignore": 430,
+    "invalid_gt": 0,
+    "invalid_det": 0
+  },
+  "thresholds": {
+    "COVER_THR": 0.5,
+    "ON_TEXT_THR": 0.5,
+    "SIZE_BINS": [
+      "0",
+      "10",
+      "20",
+      "40",
+      "inf"
+    ]
+  },
+  "summary": {
+    "n_det_care": 1512,
+    "n_gt_care": 2077,
+    "tp": 882,
+    "fp": 630,
+    "fn": 1195,
+    "fp_breakdown": {
+      "FP_merged_line": 289,
+      "FP_no_care_word": 232,
+      "FP_localization": 109
+    },
+    "fn_breakdown": {
+      "FN_inside_merged_line": 756,
+      "FN_missed": 321,
+      "FN_localization": 118
+    },
+    "word_coverage_recall": 0.8454501685122773,
+    "det_on_text_precision": 0.91005291005291,
+    "coverage_hmean": 0.8765628446384416,
+    "recall_upper_bound_if_lines_split_into_words": 0.7886374578719306
+  },
+  "recall_by_word_height": [
+    {
+      "size_bin": "0-10px",
+      "n_words": 17,
+      "iou_recall": 0.1176,
+      "coverage_recall": 0.4706,
+      "missed": 0.5294,
+      "inside_merged_line": 0.2941
+    },
+    {
+      "size_bin": "10-20px",
+      "n_words": 609,
+      "iou_recall": 0.3005,
+      "coverage_recall": 0.8128,
+      "missed": 0.1872,
+      "inside_merged_line": 0.4516
+    },
+    {
+      "size_bin": "20-40px",
+      "n_words": 989,
+      "iou_recall": 0.4328,
+      "coverage_recall": 0.8625,
+      "missed": 0.1375,
+      "inside_merged_line": 0.364
+    },
+    {
+      "size_bin": "40-infpx",
+      "n_words": 462,
+      "iou_recall": 0.5823,
+      "coverage_recall": 0.8658,
+      "missed": 0.1342,
+      "inside_merged_line": 0.2511
+    }
+  ],
+  "utc_time": "2026-10-31T05:39:07.241557+00:00"
+}

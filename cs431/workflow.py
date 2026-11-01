@@ -46,10 +46,16 @@ def phase1(args):
     freeze = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'], text=True)
     (out/'pip_freeze.txt').write_text(freeze, encoding='utf-8')
     p, r, h = (100*metrics['measured'][k] for k in ('precision', 'recall', 'hmean'))
+    ref = read_json(inference.CONFIG)['phase1_official_reference']
+    rp, rr, rh = (100*ref[k] for k in ('precision', 'recall', 'hmean'))
     (out/'REVIEW_ME.md').write_text(
         f'# Paddle Phase 1 — requires review\n\nICDAR2015 test: 500 images.\n\n'
         f'Precision {p:.3f}%; Recall {r:.3f}%; Hmean {h:.3f}%.\n\n'
-        'Official checkpoint, external benchmark validation. Exact Paddle 83.8% reproduction: NOT VERIFIED.\n\n'
+        f'Reference with the same code/config/weights/packages (official tools/eval.py run, Phase 1 report): '
+        f'P {rp:.3f}% / R {rr:.3f}% / Hmean {rh:.3f}% (delta Hmean {h-rh:+.3f} pp). A non-trivial delta means '
+        'this adapter does not reproduce the official pipeline; investigate before review. '
+        'Diagnostic only, not an automatic pass threshold.\n\n'
+        'Official PaddleOCR evaluation pipeline on a public benchmark. Exact Paddle 83.8% reproduction: NOT VERIFIED.\n\n'
         'Inspect metrics.json, dataset provenance/inventory, per_image.jsonl, worker logs and overlays/. '
         'No published ICDAR2015 target is asserted for this PP-OCRv5 checkpoint; acceptance requires '
         'a written assessment, not comparison with Monkey or the unrelated 83.8% figure. '

@@ -24,7 +24,7 @@ vẫn giữ trạng thái group-review tại thời điểm tạo, không sửa 
 
 Paddle: mọi clone mới phải chạy đủ 500 ảnh ICDAR2015 test. Code kiểm tra tập ID,
 đọc GT quadrilateral/transcript ignore, ghi hashes ảnh/GT và model/runtime/code,
-chạy inference giữ postprocessing đã pin, chấm bằng evaluator PaddleOCR 3.0.3.
+chạy inference đúng pipeline `tools/eval.py` (PaddleOCR v3.3.3, config/weights chính thức), chấm bằng evaluator PaddleOCR (giống từng byte v3.0.3 và v3.3.3).
 Kết quả, 20 overlays, logs và counts được lưu trước bước review.
 Paddle reports mới mặc định vào `paddle/phase1/report` và `paddle/phase2/report`.
 Config/code identity đổi do chuyển đường dẫn; không sửa receipt local cũ để bỏ

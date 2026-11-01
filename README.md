@@ -7,7 +7,7 @@ polygon GT; Phase 3 lưu code và kết quả cải tiến Monkey. Chỉ phát h
 | Phương pháp | Phase 1 | Phase 2 | Phase 3 | Hướng dẫn |
 |---|---|---|---|---|
 | Monkey | Có kết quả ICDAR2015 | Có baseline 9.898 cặp | Có code và report job 7957 | [monkey/README.md](monkey/README.md) |
-| Paddle | ICDAR2015 Hmean 52,30 (`tools/eval.py` chính thức; 83,8 NOT VERIFIED) | Chờ gate Phase 1 | Chưa triển khai | [paddle/README.md](paddle/README.md) |
+| Paddle | ICDAR2015 Hmean 52,30 (`tools/eval.py` chính thức; 83,8 NOT VERIFIED) | Notebook Kaggle sẵn sàng, chờ chạy GPU | Chưa triển khai | [paddle/README.md](paddle/README.md) |
 
 ## Cấu trúc
 
@@ -37,7 +37,9 @@ CS431/
       notebooks/module_run.ipynb, diag_line_vs_word.ipynb   Phân tích phụ
       notebooks/repo_pipeline_phase1.ipynb, pipeline_phase1_phase2.ipynb   Gate Phase 2
       report/                    REVIEW + official_eval/ + diag_line_vs_word/
-    phase2/report/               Chờ gate và kết quả Phase 2
+    phase2/
+      notebooks/paddle_phase2_kaggle.ipynb   Kaggle: Python 3.11 (uv) → gate → Phase 2
+      report/                    Chờ kết quả Phase 2
   cs431/                         Package Python dùng chung, giữ ở root
   configs/                       Shared lock, source provenance, local-root example
   docs/                          WORKFLOW, shared protocol, reference handoff

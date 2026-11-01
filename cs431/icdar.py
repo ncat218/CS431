@@ -1,4 +1,4 @@
-"""Explicit ICDAR2015 test IDs and unmodified PaddleOCR 3.0.3 IoU evaluator."""
+"""Explicit ICDAR2015 test IDs and unmodified PaddleOCR IoU evaluator (identical in v3.0.3 and v3.3.3)."""
 import math
 from pathlib import Path
 

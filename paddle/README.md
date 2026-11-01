@@ -28,9 +28,18 @@ Pipeline repo, dùng cho gate Phase 2:
   review cho đến khi người thực hiện điền đánh giá; sau đó mới có Phase 2.
 
 Hai notebook pipeline do CS431 tổ chức, không phải notebook nguyên bản của tác giả.
-Chúng gọi detector-only API và evaluator Paddle đã pin; không tạo metric sẵn.
-Kaggle bật Internet + T4 ×2, Colab dùng một GPU nếu được cấp A100. Python 3.11/3.12.
-Kaggle hiện chạy Python 3.13 nên `setup_paddle.py` sẽ dừng; chưa xử lý.
+Kaggle bật Internet + T4 ×2, Colab dùng một GPU nếu được cấp A100.
+
+**Từ 01/11/2026 pipeline repo dùng đúng detector của Phase 1 chính thức** (PaddleOCR v3.3.3,
+config/weights `.pdparams` chính thức, paddle 3.3.1, Python 3.13; `cs431/ppocr_detector.py`
+chạy y như `tools/eval.py`). Gate Phase 1 của repo vì vậy phải ra lại ≈ Hmean 52,30.
+Bản cũ (`paddleocr.TextDetection` 3.0.3, resize 960, Hmean 49,15) không còn dùng.
+
+Phase 2 trên Kaggle (khuyến nghị):
+
+- `paddle/phase2/notebooks/paddle_phase2_kaggle.ipynb`: venv riêng từ Python 3.13 của Kaggle →
+  `paddle phase1` (gate, so với 52,30) → người thực hiện xem overlays và tự điền `paddle review` →
+  `paddle phase2` → `compare` → zip để review.
 
 ```bash
 python paddle/tools/setup_paddle.py --venv /kaggle/working/cs431-paddle

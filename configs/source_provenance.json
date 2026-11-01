@@ -2,10 +2,10 @@
   "monkey_h200_repository": "https://github.com/ncat218/MonKeyOCR-",
   "monkey_snapshot_commit": "0afec7c1d63f8cfc8577fab6a5c79a0d4ee88048",
   "snapshot_mode": "git tracked files only; no nested .git; no runtime caches",
-  "paddle_iou_evaluator_source": "https://github.com/PaddlePaddle/PaddleOCR/blob/a00f633cef33a8192f853fdaf8decf24ce2240b0/ppocr/metrics/eval_det_iou.py",
+  "paddle_iou_evaluator_source": "https://github.com/PaddlePaddle/PaddleOCR/blob/c0522b89e2218741f174ec8b45588dec93fa66b3/ppocr/metrics/eval_det_iou.py (v3.3.3; byte-identical to the earlier a00f633 copy)",
   "paddle_iou_evaluator_sha256": "5d80facb77bca0ca2a561b6488a84e14cf06a173a6dec5cc22a4d01209e6b700",
-  "model_hash_provenance": "HF revision API LFS SHA256 for weights; SHA256 directly computed for inference.json and inference.yml",
-  "gpu_validation": "Paddle GPU not executed during repository preparation",
+  "model_hash_provenance": "Official training checkpoint PP-OCRv5_server_det_pretrained.pdparams (bcebos URL in paddle_v5.json), SHA256 equal to Phase 1 official_eval/checkpoint_sha256.txt; official config SHA256 of git blob at v3.3.3",
+  "gpu_validation": "Phase 1 official tools/eval.py ran on Kaggle T4 (31/10/2026). The repo OfficialDetector adapter was CPU-smoke-tested only before its first GPU run",
   "monkey_snapshot_location": "monkey/phase3",
   "monkey_reports_locations": [
     "monkey/phase1/report",

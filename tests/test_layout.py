@@ -75,6 +75,19 @@ class LayoutTests(unittest.TestCase):
         self.assertNotIn("'phase2'", code)
         self.assertIn('REVIEW_NOTES', code)
 
+    def test_kaggle_phase2_notebook_keeps_gate_and_pins(self):
+        notebook = read_json(ROOT/'paddle/phase2/notebooks/paddle_phase2_kaggle.ipynb')
+        code = '\n'.join(''.join(c['source']) for c in notebook['cells'] if c['cell_type']=='code')
+        order = [code.index(f"'paddle', '{step}'") for step in ('phase1', 'review', 'phase2')]
+        self.assertEqual(order, sorted(order))
+        self.assertIn("REVIEWER = ''", code)
+        self.assertIn("REVIEW_NOTES = ''", code)
+        self.assertIn('ppocr_detector.py', code)
+        self.assertIn('phase1_official_reference', code)
+        self.assertIn('setup_paddle.py', code)
+        for forbidden in ('--skip', '--force', 'paddle_phase1_review.json', 'limit_side_len', 'box_thresh'):
+            self.assertNotIn(forbidden, code)
+
 
 if __name__ == '__main__':
     unittest.main()

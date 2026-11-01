@@ -1,4 +1,4 @@
-"""Paddle detector only. Workers receive paths/IDs/hashes, never GT polygons."""
+"""Paddle detector only (official tools/eval.py pipeline). Workers receive paths/IDs/hashes, never GT polygons."""
 import importlib.metadata
 import math
 import os
@@ -13,35 +13,44 @@ CONFIG = ROOT/'paddle/configs/paddle_v5.json'
 
 
 def model_identity(model_dir, config_path=CONFIG):
+    """Pinned PaddleOCR clone + official config/checkpoint + packages + CS431 code."""
     config = read_json(config_path)
     provenance = read_json(ROOT/'configs/source_provenance.json')
     if sha256(ROOT/'paddle/vendor/eval_det_iou.py') != provenance['paddle_iou_evaluator_sha256']:
         raise RuntimeError('Pinned upstream ICDAR evaluator changed')
     folder = Path(model_dir)
-    for name, expected in config['model_files_sha256'].items():
-        if sha256(folder/name) != expected:
-            raise RuntimeError('Official pinned Paddle model file changed: ' + name)
+    repo = folder/'PaddleOCR'
+    head = subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip()
+    if head != config['paddleocr_commit']:
+        raise RuntimeError(f'PaddleOCR clone must be {config["paddleocr_tag"]} {config["paddleocr_commit"]}, got {head}')
+    if subprocess.check_output(['git', '-C', str(repo), 'status', '--porcelain', '--untracked-files=no'], text=True).strip():
+        raise RuntimeError('PaddleOCR clone has modified tracked files')
+    if sha256(repo/config['config_relpath']) != config['config_sha256']:
+        raise RuntimeError('Official PP-OCRv5_server_det.yml changed')
+    if sha256(repo/config['upstream_iou_evaluator_relpath']) != sha256(ROOT/'paddle/vendor/eval_det_iou.py'):
+        raise RuntimeError('Vendored evaluator differs from the pinned PaddleOCR evaluator')
+    if sha256(folder/'weights'/config['weights_file']) != config['weights_sha256']:
+        raise RuntimeError('Official PP-OCRv5_server_det checkpoint changed')
     versions = {name: importlib.metadata.version(name) for name in config['package_versions']}
     if versions != config['package_versions']:
         raise RuntimeError(f'Use the pinned Paddle environment: expected {config["package_versions"]}, got {versions}')
     packages = sorted((d.metadata['Name'].lower().replace('_', '-'), d.version)
                       for d in importlib.metadata.distributions() if d.metadata['Name'])
     code = {name: sha256(ROOT/name) for name in [
-        'cs431/common.py', 'cs431/inference.py', 'cs431/icdar.py',
+        'cs431/common.py', 'cs431/inference.py', 'cs431/ppocr_detector.py', 'cs431/icdar.py',
         'cs431/workflow.py', 'cs431/manifest.py', 'cs431/gate.py',
         'paddle/vendor/eval_det_iou.py']}
-    return dict(config_sha256=sha256(config_path), config_content_sha256=identity(config), model_files=config['model_files_sha256'],
-                model_revision=config['model_revision'], package_versions=versions,
+    return dict(config_sha256=sha256(config_path), config_content_sha256=identity(config),
+                paddleocr_commit=head, official_config_sha256=config['config_sha256'],
+                weights_sha256=config['weights_sha256'], package_versions=versions,
                 environment_packages_identity=identity(packages), python_version=sys.version,
                 code=code)
 
 
-def parse_output(result):
-    # TextDetResult is dict-like; .json is intended for human serialization.
-    if 'dt_polys' not in result or 'dt_scores' not in result:
-        raise ValueError('Unexpected TextDetection result schema; expected dt_polys/dt_scores')
-    polygons = [[float(v) for point in poly for v in point] for poly in result['dt_polys']]
-    scores = [float(s) for s in result['dt_scores']]
+def parse_output(polygons, scores):
+    """Validate detector output: finite quadrilaterals in original-image pixels, scores in [0, 1]."""
+    polygons = [[float(v) for v in p] for p in polygons]
+    scores = [float(s) for s in scores]
     if len(polygons) != len(scores) or any(not math.isfinite(s) or not 0 <= s <= 1 for s in scores):
         raise ValueError('Invalid Paddle output scores')
     if any(len(p) != 8 or any(not math.isfinite(v) for v in p) for p in polygons):
@@ -81,7 +90,7 @@ def worker(tasks_file, out, model_dir, expected_identity, manifest_hash):
     if identity(actual_identity) != expected_identity:
         raise RuntimeError('Worker environment/model differs from Phase 1/controller')
     import paddle
-    from paddleocr import TextDetection
+    from .ppocr_detector import OfficialDetector
 
     if not paddle.is_compiled_with_cuda() or paddle.device.cuda.device_count() != 1:
         raise RuntimeError('Worker must see exactly one CUDA GPU; CPU fallback is forbidden')
@@ -112,30 +121,29 @@ def worker(tasks_file, out, model_dir, expected_identity, manifest_hash):
     todo = [t for t in tasks if t['sample_id'] not in seen]
     if not todo:
         return
-    detector = TextDetection(model_name=config['model_name'], model_dir=str(model_dir),
-                             device='gpu:0', enable_hpi=False, use_tensorrt=False,
-                             precision='fp32', **config['predictor_args'])
+    detector = OfficialDetector(Path(model_dir)/'PaddleOCR', config['config_relpath'],
+                                Path(model_dir)/'weights'/config['weights_file'], device='gpu:0')
+    save_json(out/'detector.json', dict(load=detector.load_report, transforms=detector.transforms,
+                                        resize=detector.resize, pipeline=config['inference_pipeline']))
     for task in todo[:1]:
         if sha256(task['path']) != task['image_sha256']:
             raise RuntimeError('Input bytes mismatch before warmup')
         for _ in range(2):
-            parse_output(detector.predict(input=task['path'], batch_size=1)[0])
+            parse_output(*detector.predict(task['path']))
     with path.open('ab') as f:
         for i, task in enumerate(todo, 1):
             if sha256(task['path']) != task['image_sha256']:
                 raise RuntimeError('Input image changed: ' + task['sample_id'])
             paddle.device.cuda.synchronize()
             started = time.perf_counter()
-            result = detector.predict(input=task['path'], batch_size=1)
+            raw = detector.predict(task['path'])
             paddle.device.cuda.synchronize()
             elapsed = 1000*(time.perf_counter()-started)
-            if len(result) != 1:
-                raise RuntimeError('Expected one output image')
-            polygons, scores = parse_output(result[0])
+            polygons, scores = parse_output(*raw)
             row = {k: v for k, v in task.items() if k not in {'path', 'image_sha256'}}
             row.update(model='paddle', polygons=polygons, scores=scores,
                        manifest_sha256=manifest_hash, model_identity_sha256=expected_identity,
-                       checkpoint_sha256=config['model_files_sha256']['inference.pdiparams'],
+                       checkpoint_sha256=config['weights_sha256'],
                        config_sha256=actual_identity['config_sha256'],
                        inference_ms_with_decode_and_postprocess=elapsed)
             f.write(canonical(row))

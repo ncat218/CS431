@@ -39,6 +39,7 @@ CS431/
       report/                    REVIEW + official_eval/ + diag_line_vs_word/
     phase2/
       notebooks/paddle_phase2_kaggle.ipynb   Kaggle Python 3.13 → gate → Phase 2; CPU retry khi T4 OOM
+      notebooks/paddle_phase2_colab_a100.ipynb   Colab A100 GPU-only, tải dữ liệu + lưu Drive
       report/                    Chờ kết quả Phase 2
   cs431/                         Package Python dùng chung, giữ ở root
   configs/                       Shared lock, source provenance, local-root example

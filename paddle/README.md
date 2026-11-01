@@ -66,6 +66,28 @@ có local receipt luôn bị chặn Phase 2. Report hiện có hoặc report Mon
 
 ## Phase 2
 
+### Colab A100 (một GPU)
+
+Mở [notebook Colab A100](https://colab.research.google.com/github/ncat218/CS431/blob/paddle-phase2/paddle/phase2/notebooks/paddle_phase2_colab_a100.ipynb).
+Chọn A100 và High-RAM nếu có, chạy từng cell từ trên xuống. Notebook tải ba dataset
+Kaggle; nếu cần xác thực, thêm Colab secret `KAGGLE_API_TOKEN` và bật notebook access.
+Mount Drive khi được yêu cầu. Sau Phase 1, xem metrics/overlays rồi tự nhập tên và
+nhận định ở bước 4; tiếp tục bước 5–9. ZIP cuối nằm trong
+`MyDrive/CS431_Paddle_Phase2/<run>/CS431_A100_COMPLETE.zip`.
+
+Notebook pin runtime `f586e14ab8d63e5f63a12550ac447da4f04a79b2`, bản GPU-only
+có sửa pip trước CPU-retry. Giữ nguyên detector Triệu, FP32/batch 1/736-min;
+không fallback CPU (đường CPU trước đó đã chạm giới hạn RAM 30 GiB).
+Probe ảnh TextVQA từng OOM trước Phase 1; probe thành công không bảo đảm toàn bộ run.
+Clone `/content/CS431_A100`, outputs `outputs/paddle_colab_a100_v1`, GPU `0`.
+Không trộn prediction T4 hoặc sửa receipt. Chưa xác nhận hoàn tất trên A100 thực tế.
+
+Drive lưu snapshot INCOMPLETE mỗi 15 phút và khi cell Phase 2 dừng; bản này giữ
+bằng chứng, không phải gói tự phục hồi runtime. Cùng runtime/GPU/clone thì chạy lại
+bước 7 để resume. Nếu Colab xóa runtime, clone mới phải chạy/review lại Phase 1.
+Snapshot có thể chứa dòng JSONL cuối chưa hoàn chỉnh. Bước 9 chỉ ghi COMPLETE sau
+khi đủ 19.796 prediction và metrics đã sinh; kiểm SHA256 bản sao Drive.
+
 Đọc notebook shared, protocol/audit trong `shared/` và `docs/PHASE2_SHARED_MANIFEST.md`
 ở root trước khi thực hiện. Dùng đúng bytes manifest 9.898 cặp và chung evaluator.
 Chỉ đổi local dataset roots. Không join/sample riêng hoặc tạo lại degradation.

@@ -50,6 +50,19 @@ Kaggle chia task xen kẽ cho hai process, mỗi process thấy đúng một GPU
 một process GPU 0. Cùng checkpoint, config, fixed postprocessing, cùng raw prediction
 schema cho evaluator. Worker chỉ có paths/IDs/image hashes; không nhận GT.
 
+Từ bản T4 CPU-retry: nếu và chỉ nếu GPU báo out-of-memory, retry nguyên ảnh bằng
+CPU FP32, cùng checkpoint/config/resize/ngưỡng. CPU chạy trong tiến trình riêng,
+khóa OS đảm bảo tối đa một ảnh CPU cùng lúc. Lỗi khác hoặc CPU thất bại vẫn dừng;
+không bỏ ảnh, không tự giảm resize. Prediction ghi execution_device/fallback_reason,
+chi tiết trong cpu_fallback/*.json và số ảnh CPU trong inference/timing.json.
+Latency có thể gồm chờ CPU/retry/startup, không phải tốc độ GPU thuần.
+
+Notebook T4 mới dùng outputs/paddle_t4_cpu_v1/{phase1,phase2}, giữ nguyên lượt cũ.
+Code thay đổi nên chạy/review lại Phase 1; không chuyển receipt hay đổi identity
+của dự đoán cũ. Sau Phase 1 chạy đối chiếu CPU/GPU trên 3 ảnh cố định để review;
+đây là diagnostic nhỏ, không chứng minh tương đương CPU/GPU trên toàn bộ dữ liệu.
+Chưa xác nhận hoàn tất 19.796 ảnh trên Kaggle bằng đường CPU-retry này.
+
 Resume giữ từng JSONL đã ghi, ràng buộc task/model/manifest/sharding/GPU. Chỉ sửa
 fragment cuối bị ngắt và lưu lại fragment; lỗi giữa file dừng. Không trộn output giữa
 hai lượt. Khi thay GPU topology, chọn thư mục `--out` mới. Không chạy đồng thời hai

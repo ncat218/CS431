@@ -71,6 +71,9 @@ có local receipt luôn bị chặn Phase 2. Report hiện có hoặc report Mon
 Mở [notebook Colab A100](https://colab.research.google.com/github/ncat218/CS431/blob/paddle-phase2/paddle/phase2/notebooks/paddle_phase2_colab_a100.ipynb).
 Chọn A100 và High-RAM nếu có, chạy từng cell từ trên xuống. Notebook tải ba dataset
 Kaggle; nếu cần xác thực, thêm Colab secret `KAGGLE_API_TOKEN` và bật notebook access.
+Cell 1b tải TextVQA clean bằng từng file của Version 1 (đúng 9.898 ảnh trong
+manifest), tránh ZIP Kaggle đang `awaiting compression`. Kiểm SHA256 từng ảnh;
+chạy lại giữ ảnh đã tải đúng hash. ICDAR2015 và degraded vẫn tải bằng gói thông thường.
 Mount Drive khi được yêu cầu. Sau Phase 1, xem metrics/overlays rồi tự nhập tên và
 nhận định ở bước 4; tiếp tục bước 5–9. ZIP cuối nằm trong
 `MyDrive/CS431_Paddle_Phase2/<run>/CS431_A100_COMPLETE.zip`.

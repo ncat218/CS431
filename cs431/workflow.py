@@ -90,6 +90,7 @@ def phase2(args):
                                 out/'metrics', bootstrap=1000)
     save_json(out/'phase2_provenance.json', dict(
         phase1_review=receipt, shared_lock=lock, model_identity=model_id,
+        execution=read_json(out/'inference/timing.json'),
         hardware={p.parent.name:read_json(p)['gpu'] for p in (out/'inference').glob('gpu*/identity.json')},
         predictions_sha256=sha256(predictions), completed_utc=now()))
     # GT overlays are produced only after inference; workers never receive GT.
@@ -136,6 +137,9 @@ def compare(paddle_metrics, monkey_metrics, output):
               'Latency is recorded per run/hardware; do not claim an A100/T4/H200 speed ranking from these runs.', '',
               'Monkey baseline hardware: two Tesla T4 workers. Paddle hardware: see phase2_provenance.json '
               'and inference/gpu*/identity.json. Latency includes decode/preprocess/postprocess.', '',
+              'Paddle may retry GPU-OOM images on CPU without resizing. Check execution_device per prediction '
+              'and cpu_fallback_images in inference/timing.json. Mixed latency includes CPU startup, queue and retries; '
+              'do not interpret it as GPU-only speed. CPU/GPU numerical equivalence is not assumed.', '',
               'Manifest SHA256: ' + lock['manifest_sha256']]
     path = Path(output)
     path.parent.mkdir(parents=True, exist_ok=True)

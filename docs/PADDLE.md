@@ -36,8 +36,10 @@ vendor = upstream) và tải weights chính thức (kiểm SHA256). Ghi pip free
 
 T4 ×2: `--gpus 0,1`, hai worker độc lập, không model parallel/DDP.
 A100: `--gpus 0`, một worker. Không coi latency hai phần cứng khác nhau là so sánh model.
-Batch 1, FP32, không TensorRT/HPI/AMP. Nếu OOM/lỗi schema/CUDA thì dừng và lưu logs;
-không tự đổi resize/threshold rồi tiếp tục ghép predictions cũ.
+Batch 1, FP32, không TensorRT/HPI/AMP. GPU OOM được retry trên CPU từng ảnh,
+giữ nguyên resize/threshold; các lỗi khác và CPU thất bại vẫn dừng và lưu logs.
+Xem docs/WORKFLOW.md về provenance, đối chiếu CPU/GPU và thư mục mới khi chuyển
+sang bản CPU-retry. Không ghép predictions cũ với identity của code mới.
 
 ## ICDAR2015 test
 

@@ -1,5 +1,6 @@
 """Paddle detector only (official tools/eval.py pipeline). Workers receive paths/IDs/hashes, never GT polygons."""
 import importlib.metadata
+import gc
 import math
 import os
 import subprocess
@@ -37,7 +38,7 @@ def model_identity(model_dir, config_path=CONFIG):
     packages = sorted((d.metadata['Name'].lower().replace('_', '-'), d.version)
                       for d in importlib.metadata.distributions() if d.metadata['Name'])
     code = {name: sha256(ROOT/name) for name in [
-        'cs431/common.py', 'cs431/inference.py', 'cs431/ppocr_detector.py', 'cs431/icdar.py',
+        'cs431/common.py', 'cs431/inference.py', 'cs431/ppocr_detector.py', 'cs431/cpu_fallback.py', 'cs431/icdar.py',
         'cs431/workflow.py', 'cs431/manifest.py', 'cs431/gate.py',
         'paddle/vendor/eval_det_iou.py']}
     return dict(config_sha256=sha256(config_path), config_content_sha256=identity(config),
@@ -91,9 +92,10 @@ def worker(tasks_file, out, model_dir, expected_identity, manifest_hash):
         raise RuntimeError('Worker environment/model differs from Phase 1/controller')
     import paddle
     from .ppocr_detector import OfficialDetector
+    from .cpu_fallback import gpu_oom, predict_or_cpu, retry_cpu
 
     if not paddle.is_compiled_with_cuda() or paddle.device.cuda.device_count() != 1:
-        raise RuntimeError('Worker must see exactly one CUDA GPU; CPU fallback is forbidden')
+        raise RuntimeError('Primary worker must see exactly one CUDA GPU; CPU retry is only for GPU OOM')
     config = read_json(CONFIG)
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -125,18 +127,32 @@ def worker(tasks_file, out, model_dir, expected_identity, manifest_hash):
                                 Path(model_dir)/'weights'/config['weights_file'], device='gpu:0')
     save_json(out/'detector.json', dict(load=detector.load_report, transforms=detector.transforms,
                                         resize=detector.resize, pipeline=config['inference_pipeline']))
+    def release_gpu():
+        gc.collect()
+        paddle.device.cuda.empty_cache()
+
     for task in todo[:1]:
         if sha256(task['path']) != task['image_sha256']:
             raise RuntimeError('Input bytes mismatch before warmup')
         for _ in range(2):
-            parse_output(*detector.predict(task['path']))
+            try:
+                parse_output(*detector.predict(task['path']))
+            except Exception as error:
+                if not gpu_oom(error):
+                    raise
+                print('GPU warmup OOM; retry through per-image CPU path', flush=True)
+                break
+        release_gpu()
     with path.open('ab') as f:
         for i, task in enumerate(todo, 1):
             if sha256(task['path']) != task['image_sha256']:
                 raise RuntimeError('Input image changed: ' + task['sample_id'])
             paddle.device.cuda.synchronize()
             started = time.perf_counter()
-            raw = detector.predict(task['path'])
+            raw, execution_device, fallback_reason = predict_or_cpu(
+                lambda: detector.predict(task['path']),
+                lambda reason: retry_cpu(task, model_dir, expected_identity, out, reason),
+                release_gpu)
             paddle.device.cuda.synchronize()
             elapsed = 1000*(time.perf_counter()-started)
             polygons, scores = parse_output(*raw)
@@ -145,6 +161,8 @@ def worker(tasks_file, out, model_dir, expected_identity, manifest_hash):
                        manifest_sha256=manifest_hash, model_identity_sha256=expected_identity,
                        checkpoint_sha256=config['weights_sha256'],
                        config_sha256=actual_identity['config_sha256'],
+                       execution_device=execution_device,
+                       fallback_reason='gpu_oom' if fallback_reason else None,
                        inference_ms_with_decode_and_postprocess=elapsed)
             f.write(canonical(row))
             f.flush()
@@ -212,5 +230,6 @@ def launch(tasks, output, model_dir, model_id, manifest_hash, gpus):
     write_jsonl(merged, sorted(rows, key=lambda r: r['sample_id']))
     save_json(out/'timing.json', dict(wall_seconds_this_launch=time.perf_counter()-started,
                                     images=len(rows), gpus=gpu_ids,
-                                    note='Worker latency includes decode/preprocess/inference/postprocess; hardware-specific'))
+                                    cpu_fallback_images=sum(r.get('execution_device') == 'cpu' for r in rows),
+                                    note='Mixed GPU/CPU if fallback used; latency includes OOM retry, CPU queue and startup; not GPU-only latency'))
     return merged

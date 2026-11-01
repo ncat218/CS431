@@ -146,10 +146,12 @@ class DataAndInferenceTests(unittest.TestCase):
             icdar.evaluate(p,dict(img_1=gt,img_2=gt))
 
     def test_paddle_output_schema_and_scores(self):
-        polys,scores=inference.parse_output(dict(dt_polys=[[[0,0],[10,0],[10,10],[0,10]]],dt_scores=[.8]))
+        polys,scores=inference.parse_output([[0,0,10,0,10,10,0,10]],[.8])
         self.assertEqual(polys,[QUAD]);self.assertEqual(scores,[.8])
-        with self.assertRaises(ValueError):inference.parse_output(dict(dt_polys=[],dt_scores=[.8]))
-        with self.assertRaises(ValueError):inference.parse_output(dict(dt_polys=[],dt_scores=[float('nan')]))
+        with self.assertRaises(ValueError):inference.parse_output([],[.8])
+        with self.assertRaises(ValueError):inference.parse_output([QUAD],[float('nan')])
+        with self.assertRaises(ValueError):inference.parse_output([QUAD[:6]],[.8])
+        with self.assertRaises(ValueError):inference.parse_output([QUAD],[1.5])
 
     def test_only_final_fragment_repaired_and_saved(self):
         p=self.root/'pred.jsonl';p.write_bytes(b'{"sample_id":"ok"}\n{"sample_id":')

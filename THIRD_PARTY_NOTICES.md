@@ -1,11 +1,12 @@
 # Third-party sources and research artifacts
 
 Paddle ICDAR IoU evaluator is copied unchanged from PaddlePaddle/PaddleOCR v3.0.3,
-commit `a00f633cef33a8192f853fdaf8decf24ce2240b0`, `ppocr/metrics/eval_det_iou.py`.
-PaddleOCR is Apache-2.0; its license is included at
+commit `a00f633cef33a8192f853fdaf8decf24ce2240b0`, `ppocr/metrics/eval_det_iou.py`; the file is
+byte-identical at v3.3.3 (commit `c0522b89e2218741f174ec8b45588dec93fa66b3`), which
+`prepare_paddle_model.py` verifies. PaddleOCR is Apache-2.0; its license is included at
 `paddle/vendor/LICENSE.PaddleOCR`. The evaluator retains its original
-reference to MhLiao/DB. Model weights are downloaded separately from the official
-PaddlePaddle Hugging Face repository at the revision in `paddle/configs/paddle_v5.json`;
+reference to MhLiao/DB. The PaddleOCR v3.3.3 source and the official training checkpoint
+are fetched at run time (pinned commit/URL/SHA256 in `paddle/configs/paddle_v5.json`);
 no weights are redistributed in this git repository.
 
 Monkey Phase 3 is a snapshot of the user's ncat218/MonKeyOCR- repository at the

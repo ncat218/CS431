@@ -77,6 +77,9 @@ Hmean theo giao thức IoU-0,5 thấp, không phải do model bỏ sót chữ.
 - Kết quả này **không mở gate Phase 2** của repo. Code gate không thay đổi, nên `run.py paddle
   phase2` vẫn cần `run.py paddle phase1` cùng `run.py paddle review` chạy trong cùng clone.
   Cách xử lý gate và stack pin cho Phase 2 chưa được chốt.
+- *Cập nhật 01/11/2026 (Trí, Phase 2):* đã chốt dùng đúng stack của lần chạy này cho repo. `paddle_v5.json`
+  giờ pin PaddleOCR v3.3.3 / config / `.pdparams` / paddle 3.3.1 như trên; `cs431/ppocr_detector.py` chạy y như
+  `tools/eval.py`. Gate `run.py paddle phase1` vì vậy phải ra lại ≈ 52,30 trước khi sang Phase 2.
 
 ## Đánh giá của người thực hiện
 

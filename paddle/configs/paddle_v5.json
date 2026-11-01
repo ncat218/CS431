@@ -1,27 +1,41 @@
 {
   "model_name": "PP-OCRv5_server_det",
-  "model_repository": "PaddlePaddle/PP-OCRv5_server_det",
-  "model_revision": "ca867c897ecbca8873081573a802ad70d499cb94",
-  "model_files_sha256": {
-    "inference.json": "af5876933d8806a1b50d895867e0781e135cd92ff37381992828fc8d1b842d28",
-    "inference.yml": "28fb721efc3634fc8aa677e474b9602cb815a91cf569ef357a7a553d7b3ce685",
-    "inference.pdiparams": "183146fe9d9910352f68482f623bcbbb9fa7b9e8fa1463b9ad288cef00524d2d"
+  "inference_pipeline": "PaddleOCR tools/eval.py-equivalent: official config Eval transforms (label ops removed) + official DBPostProcess + official training checkpoint; batch 1, FP32",
+  "paddleocr_repository": "https://github.com/PaddlePaddle/PaddleOCR.git",
+  "paddleocr_tag": "v3.3.3",
+  "paddleocr_commit": "c0522b89e2218741f174ec8b45588dec93fa66b3",
+  "config_relpath": "configs/det/PP-OCRv5/PP-OCRv5_server_det.yml",
+  "config_sha256": "61cba4ad578e32093f9bc8ea36f1217715be2e2d87e69b7596b3617b1f3c1de0",
+  "config_overrides": {"Global.checkpoints": "<model_dir>/weights/PP-OCRv5_server_det_pretrained.pdparams"},
+  "weights_url": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams",
+  "weights_file": "PP-OCRv5_server_det_pretrained.pdparams",
+  "weights_sha256": "2802f7d4748ea592819ae4550c195c5bdb43755dfdb5ebd25e01bb4d885aebc9",
+  "upstream_iou_evaluator_relpath": "ppocr/metrics/eval_det_iou.py",
+  "preprocess_postprocess_from_config": {
+    "DetResizeForTest": "no arguments in config -> limit_side_len 736, limit_type min",
+    "NormalizeImage": "scale 1/255, ImageNet mean/std, hwc",
+    "DBPostProcess": {"thresh": 0.3, "box_thresh": 0.6, "max_candidates": 1000, "unclip_ratio": 1.5}
   },
   "package_versions": {
-    "paddlepaddle-gpu": "3.0.0",
-    "paddleocr": "3.0.3",
-    "paddlex": "3.0.3",
-    "numpy": "1.26.4",
-    "Pillow": "11.3.0",
-    "shapely": "2.2.0"
+    "paddlepaddle-gpu": "3.3.1",
+    "numpy": "2.1.3",
+    "opencv-python": "4.14.0.94",
+    "opencv-contrib-python": "4.14.0.94",
+    "shapely": "2.1.2",
+    "scikit-image": "0.25.2",
+    "albumentations": "2.0.8",
+    "albucore": "0.0.24",
+    "pyclipper": "1.4.0",
+    "lmdb": "3.0.0",
+    "Pillow": "13.0.0",
+    "PyYAML": "6.0.3"
   },
-  "predictor_args": {
-    "limit_side_len": 960,
-    "limit_type": "max",
-    "thresh": 0.3,
-    "box_thresh": 0.6,
-    "unclip_ratio": 1.5
+  "phase1_official_reference": {
+    "source": "paddle/phase1/report/official_eval (Triệu, 31/10/2026, tools/eval.py, same commit/config/weights/packages)",
+    "precision": 0.5852205005959475,
+    "recall": 0.47279730380356283,
+    "hmean": 0.5230359520639148,
+    "use": "display/diagnostic only; not an automatic pass threshold"
   },
-  "paddleocr_source_commit": "a00f633cef33a8192f853fdaf8decf24ce2240b0",
-  "phase1_scope": "official checkpoint external ICDAR2015 validation; exact 83.8 reproduction NOT VERIFIED"
+  "phase1_scope": "official PaddleOCR evaluation pipeline on ICDAR2015 test; exact 83.8 reproduction NOT VERIFIED (internal unpublished set)"
 }

@@ -42,6 +42,13 @@ workflow chống nhầm lẫn, không phải hệ thống bảo mật chống ng
 
 ## Phase 2
 
+Notebook `paddle/phase2/notebooks/paddle_phase2_colab_a100.ipynb` dùng một A100,
+pin runtime GPU-only `f586e14ab8d63e5f63a12550ac447da4f04a79b2` để tránh đường
+CPU-retry đã hết RAM 30 GiB. Không đổi detector/resize/threshold; Phase 1 và review
+vẫn bắt buộc trong clone Colab mới. Tải dữ liệu vào đĩa local, lưu snapshot báo cáo
+INCOMPLETE và ZIP COMPLETE vào Drive; không tự khôi phục receipt từ snapshot.
+Notebook này chưa được xác nhận chạy hoàn tất trên A100.
+
 Đọc notebook shared và protocol trước, giải nén đúng bản reference đã review, chỉ đổi
 local dataset roots. Gate được kiểm tra trước khi load model/dữ liệu. Không có cờ
 `--skip-phase1`, `--force` hoặc `--accept-any-manifest`.

@@ -11,4 +11,4 @@ Báo cáo kết quả để nhóm review: [REVIEW.md](REVIEW.md) — Kaggle T4 �
 | `recheck_verification.json` | Chấm lại độc lập từ raw predictions: khớp |
 
 Raw predictions, per-image metrics và overlays không commit (kích thước/pixels); giữ ngoài git.
-Notebook: `paddle/phase2/notebooks/` (Kaggle T4 ×2 batch dùng cho lượt này sinh từ cùng code, commit `a6d73b8`).
+Notebook: `paddle/phase2/notebooks/` (Kaggle T4 ×2 batch dùng cho lượt này sinh từ cùng code, commit `a6d73b8`, cây code = `ca9444f` trên `main`).

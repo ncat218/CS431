@@ -7,7 +7,7 @@ polygon GT; Phase 3 lưu code và kết quả cải tiến Monkey. Chỉ phát h
 | Phương pháp | Phase 1 | Phase 2 | Phase 3 | Hướng dẫn |
 |---|---|---|---|---|
 | Monkey | Có kết quả ICDAR2015 | Có baseline 9.898 cặp | Có code và report job 7957 | [monkey/README.md](monkey/README.md) |
-| Paddle | ICDAR2015 Hmean 52,30 (`tools/eval.py` chính thức; 83,8 NOT VERIFIED) | Notebook Kaggle sẵn sàng, chờ chạy GPU | Chưa triển khai | [paddle/README.md](paddle/README.md) |
+| Paddle | ICDAR2015 Hmean 52,30 (`tools/eval.py` chính thức; 83,8 NOT VERIFIED) | TextVQA 9.898 cặp: Hmean 33,78 → 16,52 (Kaggle T4 ×2), [REVIEW](paddle/phase2/report/REVIEW.md) | Chưa triển khai | [paddle/README.md](paddle/README.md) |
 
 ## Cấu trúc
 

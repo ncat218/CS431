@@ -1,0 +1,11 @@
+{
+  "clean_unique": true,
+  "degraded_instance": true,
+  "paired_source_weighted_micro": true,
+  "macro_source_mean": false,
+  "bootstrap": true,
+  "size_bins": true,
+  "strata": true,
+  "per_image_identical": false,
+  "all_close_1e-9": true
+}

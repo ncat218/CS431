@@ -1,10 +1,14 @@
 # Paddle Phase 2 report
 
-Chờ Phase 1 chạy đủ và được người thực hiện đánh giá chấp nhận trong clone hiện tại.
-Sau khi gate mở, `python run.py paddle phase2` từ root sinh metrics, paired overlays,
-provenance và predictions tại đây, trên đúng shared manifest 9.898 cặp.
+Báo cáo kết quả để nhóm review: [REVIEW.md](REVIEW.md) — Kaggle T4 ×2, 02/11/2026, 19.796 lượt inference trên shared manifest 9.898 cặp.
 
-Notebook chạy: `paddle/phase2/notebooks/paddle_phase2_kaggle.ipynb` (Kaggle T4 ×2, Python 3.13).
-Bản CPU-retry ghi kết quả mới vào `outputs/paddle_t4_cpu_v1/phase2`, giữ nguyên report cũ.
+| File | Nội dung |
+|---|---|
+| `REVIEW.md` | Kết quả, so sánh Monkey, phân tích lỗi, ngoại lệ 4 ảnh 4608 px, bằng chứng, giới hạn |
+| `metrics.json`, `clean_vs_degraded.md` | Output evaluator đã freeze (nguyên bản từ lượt chạy) |
+| `phase2_provenance.json`, `inference_timing.json`, `phase1_gate_metrics.json` | Provenance, review Phase 1, thiết bị từng ảnh |
+| `precomputed_oom_predictions.json` | Prediction CPU local cho 4 ảnh vượt VRAM T4/RAM Kaggle |
+| `recheck_verification.json` | Chấm lại độc lập từ raw predictions: khớp |
 
-Chưa có số liệu Paddle Phase 2 được tạo sẵn. Artifacts runtime được gitignore.
+Raw predictions, per-image metrics và overlays không commit (kích thước/pixels); giữ ngoài git.
+Notebook: `paddle/phase2/notebooks/` (Kaggle T4 ×2 batch dùng cho lượt này sinh từ cùng code, commit `a6d73b8`).

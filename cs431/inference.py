@@ -9,6 +9,7 @@ import time
 from pathlib import Path
 
 from .common import ROOT, canonical, identity, jsonl, read_json, save_json, sha256, write_jsonl
+from .cpu_fallback import precomputed_identity
 
 CONFIG = ROOT/'paddle/configs/paddle_v5.json'
 
@@ -45,7 +46,7 @@ def model_identity(model_dir, config_path=CONFIG):
                 paddleocr_commit=head, official_config_sha256=config['config_sha256'],
                 weights_sha256=config['weights_sha256'], package_versions=versions,
                 environment_packages_identity=identity(packages), python_version=sys.version,
-                code=code)
+                code=code, precomputed_oom=precomputed_identity())
 
 
 def parse_output(polygons, scores):
@@ -92,7 +93,7 @@ def worker(tasks_file, out, model_dir, expected_identity, manifest_hash):
         raise RuntimeError('Worker environment/model differs from Phase 1/controller')
     import paddle
     from .ppocr_detector import OfficialDetector
-    from .cpu_fallback import gpu_oom, predict_or_cpu, retry_cpu
+    from .cpu_fallback import gpu_oom, oom_retry, predict_or_cpu
 
     if not paddle.is_compiled_with_cuda() or paddle.device.cuda.device_count() != 1:
         raise RuntimeError('Primary worker must see exactly one CUDA GPU; CPU retry is only for GPU OOM')
@@ -149,10 +150,16 @@ def worker(tasks_file, out, model_dir, expected_identity, manifest_hash):
                 raise RuntimeError('Input image changed: ' + task['sample_id'])
             paddle.device.cuda.synchronize()
             started = time.perf_counter()
+            oom_device = {}
+
+            def on_oom(reason, task=task):
+                raw_oom, oom_device['device'] = oom_retry(task, model_dir, expected_identity, out, reason)
+                return raw_oom
+
             raw, execution_device, fallback_reason = predict_or_cpu(
-                lambda: detector.predict(task['path']),
-                lambda reason: retry_cpu(task, model_dir, expected_identity, out, reason),
-                release_gpu)
+                lambda: detector.predict(task['path']), on_oom, release_gpu)
+            if fallback_reason:
+                execution_device = oom_device['device']
             paddle.device.cuda.synchronize()
             elapsed = 1000*(time.perf_counter()-started)
             polygons, scores = parse_output(*raw)
@@ -230,6 +237,7 @@ def launch(tasks, output, model_dir, model_id, manifest_hash, gpus):
     write_jsonl(merged, sorted(rows, key=lambda r: r['sample_id']))
     save_json(out/'timing.json', dict(wall_seconds_this_launch=time.perf_counter()-started,
                                     images=len(rows), gpus=gpu_ids,
-                                    cpu_fallback_images=sum(r.get('execution_device') == 'cpu' for r in rows),
+                                    cpu_fallback_images=sum(r.get('execution_device', 'gpu') != 'gpu' for r in rows),
+                                    precomputed_oom_images=sum(r.get('execution_device') == 'cpu_local_precomputed' for r in rows),
                                     note='Mixed GPU/CPU if fallback used; latency includes OOM retry, CPU queue and startup; not GPU-only latency'))
     return merged

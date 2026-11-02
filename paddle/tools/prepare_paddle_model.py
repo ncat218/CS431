@@ -9,6 +9,7 @@ import argparse
 import hashlib
 import json
 import subprocess
+import time
 import urllib.request
 from pathlib import Path
 
@@ -55,15 +56,29 @@ def main():
         print('VERIFIED', dest.name)
         return
     temporary = dest.with_suffix(dest.suffix+'.download')
-    digest = hashlib.sha256()
-    with urllib.request.urlopen(cfg['weights_url'], timeout=120) as src, temporary.open('wb') as dst:
-        while chunk := src.read(1024*1024):
-            digest.update(chunk)
-            dst.write(chunk)
-    if digest.hexdigest() != cfg['weights_sha256']:
-        raise RuntimeError('Downloaded official checkpoint hash mismatch')
-    temporary.replace(dest)
-    print('DOWNLOADED & VERIFIED', dest.name)
+    # The CDN occasionally ends a transfer early without an error: check length + hash, retry; never accept a mismatch.
+    for attempt in range(1, 6):
+        digest, received = hashlib.sha256(), 0
+        try:
+            with urllib.request.urlopen(cfg['weights_url'], timeout=120) as src, temporary.open('wb') as dst:
+                expected_len = int(src.headers.get('Content-Length') or 0)
+                while chunk := src.read(1024*1024):
+                    digest.update(chunk)
+                    dst.write(chunk)
+                    received += len(chunk)
+        except OSError as error:
+            print(f'attempt {attempt}: download error {type(error).__name__}: {error}', flush=True)
+            time.sleep(10 * attempt)
+            continue
+        if digest.hexdigest() == cfg['weights_sha256']:
+            temporary.replace(dest)
+            print('DOWNLOADED & VERIFIED', dest.name, received, 'bytes')
+            return
+        print(f'attempt {attempt}: hash mismatch, received {received} bytes, Content-Length {expected_len}, '
+              f'sha256 {digest.hexdigest()}', flush=True)
+        time.sleep(10 * attempt)
+    temporary.unlink(missing_ok=True)
+    raise RuntimeError('Downloaded official checkpoint hash mismatch after 5 attempts')
 
 
 if __name__ == '__main__':

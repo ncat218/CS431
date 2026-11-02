@@ -53,8 +53,16 @@ def main():
     env = setup_env()
     ensure_pip(python, env)
     subprocess.run([python, '-I', '-m', 'pip', 'install', 'pip==25.1.1'], env=env, check=True)
-    subprocess.run([python, '-I', '-m', 'pip', 'install', PADDLE,
-                    '-i', f'https://www.paddlepaddle.org.cn/packages/stable/{args.cuda}/'], env=env, check=True)
+    # The 2 GB wheel comes from a slow CDN that can drop mid-transfer: resume partial downloads and retry.
+    network = ['--timeout', '120', '--retries', '10', '--resume-retries', '20']
+    for attempt in range(1, 4):
+        done = subprocess.run([python, '-I', '-m', 'pip', 'install', *network, PADDLE,
+                               '-i', f'https://www.paddlepaddle.org.cn/packages/stable/{args.cuda}/'], env=env)
+        if done.returncode == 0:
+            break
+        print(f'paddlepaddle-gpu install attempt {attempt} failed; retrying', flush=True)
+    else:
+        raise SystemExit('Could not install ' + PADDLE + ' after 3 attempts (network)')
     subprocess.run([python, '-I', '-m', 'pip', 'install', '-r', str(ROOT/'paddle/requirements.txt')], env=env, check=True)
     subprocess.run([python, '-I', '-m', 'pip', 'check'], env=env, check=True)
     subprocess.run([python, '-c', 'import paddle; assert paddle.is_compiled_with_cuda(); '

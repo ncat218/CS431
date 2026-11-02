@@ -7,3 +7,4 @@ shared/frozen/*.sha256 -text
 shared/Shared_Manifest_TextVQA_TextOCR_Public.ipynb -text whitespace=cr-at-eol
 docs/reference/*.md whitespace=-blank-at-eol
 monkey/phase3/src/monkey_textdet/vendor/*.py -text
+paddle/phase2/report/precomputed_oom_predictions.json text eol=lf

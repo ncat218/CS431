@@ -85,6 +85,42 @@ def retry_cpu(task, model_dir, expected_identity, out, reason):
     return result['polygons'], result['scores']
 
 
+PRECOMPUTED_ENV = 'CS431_PRECOMPUTED_OOM'
+
+
+def precomputed_identity():
+    """Bind the optional host-precomputed OOM predictions into the model/run identity (Phase 1 receipt + Phase 2)."""
+    path = os.environ.get(PRECOMPUTED_ENV)
+    if not path:
+        return None
+    data = read_json(path)
+    return dict(file_sha256=sha256(path), image_sha256=sorted(data['entries']),
+                detector=data['detector'], environment=data['environment'])
+
+
+def oom_retry(task, model_dir, expected_identity, out, reason):
+    """GPU OOM only. Use the host-precomputed prediction for this exact image (same SHA256) if one was
+    provided via CS431_PRECOMPUTED_OOM; otherwise the serialized CPU retry in this environment.
+    Returns ((polygons, scores), execution_device)."""
+    path = os.environ.get(PRECOMPUTED_ENV)
+    if path:
+        from .inference import CONFIG
+        data, cfg = read_json(path), read_json(CONFIG)
+        for key in ('config_sha256', 'weights_sha256', 'paddleocr_commit'):
+            if data[key] != cfg[key]:
+                raise RuntimeError(f'Precomputed OOM predictions use a different {key}')
+        entry = data['entries'].get(task['image_sha256'])
+        if entry is not None:
+            if entry['sample_id'] != task['sample_id'] or entry['image_sha256'] != task['image_sha256']:
+                raise RuntimeError('Precomputed OOM prediction belongs to another sample')
+            save_json(Path(out)/'cpu_fallback'/f'{identity(task)}.precomputed.json',
+                      dict(entry, gpu_oom=reason, model_identity_sha256=expected_identity,
+                           precomputed_file_sha256=sha256(path)))
+            print('PRECOMPUTED_OOM used:', task['sample_id'], flush=True)
+            return (entry['polygons'], entry['scores']), entry['execution_device']
+    return retry_cpu(task, model_dir, expected_identity, out, reason), 'cpu'
+
+
 def execute(args):
     """Called under an OS lock before importing Paddle or loading weights."""
     from .inference import CONFIG, model_identity, parse_output

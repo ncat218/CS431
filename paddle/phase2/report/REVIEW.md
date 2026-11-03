@@ -1,7 +1,7 @@
 # Đánh giá Phase 2 — PP-OCRv5_server_det trên TextVQA clean/degraded
 
 Người thực hiện: Trí. Chạy ngày 02/11/2026 trên Kaggle **Tesla T4 ×2** (notebook batch `ojanek/cs431-paddle-phase2-t4x2`,
-lượt B), repo commit `a6d73b8` (nhánh `paddle-phase2`). Bản phân tích này do trợ lý soạn từ artifacts; người thực hiện đọc và xác nhận.
+lượt B), repo commit `a6d73b8` (nhánh `paddle-phase2`; sau khi lịch sử được viết lại, cây code giống hệt `ca9444f` trên `main`). Bản phân tích này do trợ lý soạn từ artifacts; người thực hiện đọc và xác nhận.
 
 Detector **giống hệt Phase 1 chính thức** của Triệu: PaddleOCR v3.3.3 (commit `c0522b89…`, không sửa), config
 `PP-OCRv5_server_det.yml`, checkpoint `.pdparams` SHA256 `2802f7d4…`, paddle-gpu 3.3.1, tiền/hậu xử lý y như `tools/eval.py`
